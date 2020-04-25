@@ -43,6 +43,7 @@ def scrape_html_with_cache(url=dph_url):
       save_cache(HTML_CACHE, HTML_CACHE_FILE)
       return HTML_CACHE[url]
 
+
 def get_contact_info(text):
    soup = bs(text, 'html.parser')
    main_content = soup.find('div', id='pg_content_main_full')
@@ -360,12 +361,21 @@ def load_categories(business_ids):
 
 # create_db()
 # load_insepction()
-HTML_CACHE = open_cache(HTML_CACHE_FILE)
-call_info = get_contact_info(scrape_html_with_cache())
-# print(call_info)
 # API_CACHE = open_cache(API_CACHE_FILE)
 # ids = load_business()
 # # print(len(ids))
 # insert_business(ids)
 # insert_cat()
 # load_categories(ids)
+
+
+HTML_CACHE = open_cache(HTML_CACHE_FILE)
+call_info = get_contact_info(scrape_html_with_cache())
+eh_contact = ''.join(call_info[0].text.split()[4:6])
+eh_website = 'https://www.sfdph.org'+call_info[0].find('a')['href']
+dc_website = call_info[1].find('a')['href']
+dc_contact = ''.join(call_info[1].text.split()[8:10])
+cp_contact = '311'
+cp_website = call_info[2].find('a')['href']
+
+
