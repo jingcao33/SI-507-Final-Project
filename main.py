@@ -246,6 +246,8 @@ def insert_business(business_ids):
       try:
          if response['is_closed'] == True:
             is_closed = 1
+         else:
+            is_closed = 0
       except:
          is_closed = 0
       try:
@@ -346,7 +348,7 @@ def load_categories(business_ids):
             # print('----')
             cur.execute(select_business_id_sql, [response['name']])
             bus_id = cur.fetchone()[0]
-            print(bus_id)
+            # print(bus_id)
             cur.execute(insert_categories_sql, [
                bus_id,
                cat_id
@@ -359,14 +361,14 @@ def load_categories(business_ids):
    conn.close()
 
 
-# create_db()
-# load_insepction()
-# API_CACHE = open_cache(API_CACHE_FILE)
-# ids = load_business()
-# # print(len(ids))
-# insert_business(ids)
-# insert_cat()
-# load_categories(ids)
+create_db()
+load_insepction()
+API_CACHE = open_cache(API_CACHE_FILE)
+ids = load_business()
+# print(len(ids))
+insert_business(ids)
+insert_cat()
+load_categories(ids)
 
 
 HTML_CACHE = open_cache(HTML_CACHE_FILE)

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF8" />
+    <title>San Francisco Restaurants</title>
+</head>
+
+<body>
+    <body>
+        <h2>Check some restaurants in San Francisco!</h1>
+    
+        <form action='/category' method='POST'>
+
+            <p>
+                Filter by category: <br/>
+                <select name='category'>
+                    <option value='All'>All Categories</option>
+                    <option value='Mediterranean'>Mediterranean</option>
+                    <option value='Indian'>Italian</option>
+                    <option value='Franch'>Franch</option>
+                    <option value='American(New)'>American(New)</option>
+                    <option value='Chinese'>Chinese</option>
+                    <option value='Indian'>Indian</option>
+                    <option value='Japanese'>Japanese</option>
+                    <option value='Mexican'>Mexican</option>
+                </select>
+    
+            </p>
+    
+            <input type='submit' value='Get Restaurants'/>
+
+        </form>
+
+        <form action='/evaluation' method='POST'>
+            <p>
+                Check restaurants' evaluations! <br /><br />
+            
+                Sort by: <br />
+                <input type='radio' name='sort' value='ratings' checked='checked' /> Ratings <br />
+                <input type='radio' name='sort' value='review_counts' /> Review Counts <br />
+                <input type='radio' name='sort' value='inspection_score' /> Inspection Score <br />
+            </p>
+
+            <p>
+                Sort direction: <br />
+                <input type='radio' name='dir' value='desc' checked='checked' />High to Low<br />
+                <input type='radio' name='dir' value='asc' />Low to High<br />
+            </p>
+
+            <input type='submit' value='Check ranking!' />
+        </form>
+
+</body>
+
+</html>
