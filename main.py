@@ -361,7 +361,7 @@ def load_categories(business_ids):
    conn.close()
 
 
-# create_db()
+create_db()
 load_insepction()
 API_CACHE = open_cache(API_CACHE_FILE)
 ids = load_business()

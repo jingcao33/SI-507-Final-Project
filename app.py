@@ -125,7 +125,7 @@ def evaluation():
     return render_template('evaluation.html', plot_div=div)
 
 
-@app.route('/info', method=['POST'])
+@app.route('/info', methods=['POST'])
 def info():
     rest_name = request.form['restaurant_name']
     info = get_info(rest_name)
