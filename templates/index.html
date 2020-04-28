@@ -44,11 +44,22 @@
 
             <p>
                 Sort direction: <br />
-                <input type='radio' name='dir' value='desc' checked='checked' />High to Low<br />
+                <input type='radio' name='dir' value='desc' checked='checked' />High to Low<br/>
                 <input type='radio' name='dir' value='asc' />Low to High<br />
             </p>
 
-            <input type='submit' value='Check ranking!' />
+            <input type='submit' value='Check ranking!'/>
+        </form>
+
+        <form action="/complaint" method="POST">
+            <p>
+                Want to make a complaint? <br /><br />
+            
+                Sort by: <br />
+                <input type='radio' name='sort' value='ratings' checked='checked' /> Ratings <br />
+                <input type='radio' name='sort' value='review_counts' /> Review Counts <br />
+                <input type='radio' name='sort' value='inspection_score' /> Inspection Score <br />
+            </p>
         </form>
 
 </body>

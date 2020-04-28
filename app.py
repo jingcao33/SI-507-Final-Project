@@ -32,38 +32,55 @@ def get_results(source_cat):
     return results
 
 
-def get_ranks():
+def get_ranks(sort_by, sort_order):
     conn = sqlite3.connect('sf_restaurants.sqlite')
     cur = conn.cursor()
 
-    sort_by = request.form['sort']
-    sort_order = request.form['dir']
-    
     if sort_by == 'ratings':
-        sort_column = 'b.rating'
-    elif sort_by == 'review_counts':
-        sort_column = 'b.review_count'
-    else:
-        sort_column = 'i.inspection_score'
-
-    # where_clause = ''
-    # if (source_cat != 'All'):
-    #     where_clause = f'WHERE c.name = "{source_cat}"'
-
-    q = f'''
-        SELECT b.name, b.is_closed, b.price
-        FROM Business b
-        JOIN Categories cat
-        ON b.id=cat.business_id
-        JOIN Cat c
-        ON cat.cat_id=c.id
-		ORDER BY RANDOM()
+        q = f'''
+        SELECT name, rating
+        FROM business
+		ORDER BY rating {sort_order}
 		LIMIT 10
-    '''
-    print(q)
+        '''
+    elif sort_by == 'review_counts':
+        q = f'''
+        SELECT name, review_count
+        FROM business
+		ORDER BY review_count {sort_order}
+		LIMIT 10
+        '''
+    else:
+        q = f'''
+        SELECT business_name, inspection_score
+        FROM Inspection
+		ORDER BY inspection_score {sort_order}
+		LIMIT 10
+        '''
+
+    # print(q)
     ranks = cur.execute(q).fetchall()
     conn.close()
     return ranks
+
+
+def get_info(rest_name):
+    conn = sqlite3.connect('sf_restaurants.sqlite')
+    cur = conn.cursor()
+
+    q = '''
+    SELECT b.name, i.business_address, b.zipcode,
+    b.phone, b.is_closed, i.inspection_score, b.rating
+    FROM business b
+    JOIN inspection i
+    ON b.name=i.business_name
+    AND b.zipcode= i.business_zipcode
+
+    '''
+
+    info = cur.execute(q).fetchall()
+    conn.close()
+    return info
 
 
 @app.route('/')
@@ -76,7 +93,7 @@ def restaurants():
     source_cat = request.form['category']
     results = get_results(source_cat)
 
-    return render_template('results.html',
+    return render_template('category.html',
                             results=results,
                            category=source_cat)
 
@@ -86,10 +103,10 @@ def evaluation():
     sort_by = request.form['sort']
     sort_order = request.form['dir']
 
-    rerults = get_ranks(sort_by, sort_order)
+    ranks = get_ranks(sort_by, sort_order)
 
-    x_vals = [r[0] for r in results]
-    y_vals = [r[1] for r in results]
+    x_vals = [r[0] for r in ranks]
+    y_vals = [r[1] for r in ranks]
     eval_data = go.Bar(
         x=x_vals,
         y=y_vals
@@ -99,6 +116,11 @@ def evaluation():
     return render_template('evaluation.html', plot_div=div)
 
 
+@app.route('/info', method=['POST'])
+def info():
+    rest_name = request.form['restaurant_name']
+    info = get_info(rest_name)
+    return render_template('info.html', results=info)
 
 
 if __name__ == '__main__':

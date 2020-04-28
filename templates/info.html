@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF8" />
+    <title>Restaurant Info</title>
+</head>
+
+<body>
+    <h1>Here are your results for {{restuarant_name}}!</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Rating</th>
+            <th>Review Counts</th>
+            <th>Inspection Score</th>
+            <th>Closed?(1-Yes/0-No)</th>
+        </tr>
+        {% for row in info %}
+        <tr>
+            <td>{{row[0]}}</td>
+            <td>{{row[1]}}</td>
+            <td>{{row[2]}}</td>
+            <td>{{row[3]}}</td>
+            <td>{{row[4]}}</td>
+            <td>{{row[5]}}</td>
+            <td>{{row[6]}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+
+
+
+
+    <p>Go back to <a href="/">home</a></p>
+
+
+
+</body>
+
+</html>

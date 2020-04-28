@@ -122,8 +122,8 @@ def create_db():
    create_business_sql = '''
       CREATE TABLE IF NOT EXISTS "Business" (
             "id" INTEGER PRIMARY KEY AUTOINCREMENT,
-            "name" varchar(255) NOT NULL,
-            "zipcode" varchar(255) NOT NULL,
+            "name" varchar(255),
+            "zipcode" varchar(255),
             "is_closed" INTEGER,
             "phone" varchar(255),
             "review_count" INTEGER,
@@ -182,7 +182,7 @@ def load_insepction():
       cur.execute(insert_inspection_sql, [
          row[0],
          row[1],
-         row[2],
+         row[2].lower(),
          row[3],
          row[4],
          row[5]
@@ -202,10 +202,10 @@ def load_business():
    cur.execute(select_inspection_sql)
    business_ids = []
    for row in cur:
-      business_name = row[0]
+      business_name = row[0].lower()
       business_address = row[1]
       params = {
-      'name': business_name.lower(),
+      'name': business_name,
       'address1': business_address,
       'city': 'San Francisco',
       'state': 'CA',
@@ -213,12 +213,12 @@ def load_business():
       }
       try:
          res = request_api_with_cache(baseurl=match_url, params=params)
-         # print(business_name)
          business_id = res['businesses'][0]['id']
          business_ids.append(business_id)
       except:
          # print(business_name)
          pass
+   # print(business_ids)
    return business_ids
 
 
@@ -251,7 +251,7 @@ def insert_business(business_ids):
       except:
          is_closed = 0
       try:
-         name = response['name']
+         name = response['name'].lower()
       except:
          pass
       try:
@@ -361,7 +361,7 @@ def load_categories(business_ids):
    conn.close()
 
 
-create_db()
+# create_db()
 load_insepction()
 API_CACHE = open_cache(API_CACHE_FILE)
 ids = load_business()
