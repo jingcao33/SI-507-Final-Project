@@ -83,6 +83,15 @@ def get_info(rest_name):
     return info
 
 
+def get_complaint(complaint):
+    if complaint == 'general':
+        r = ('Environmental Health', main.eh_contact, main.eh_website)
+    elif complaint == 'severe':
+        r = ('Disease Control', main.dc_contact, main.dc_website)
+    else:
+        r = ('City Customer Service Agency', main.cp_contact, main.cp_website)
+    return r
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -121,6 +130,13 @@ def info():
     rest_name = request.form['restaurant_name']
     info = get_info(rest_name)
     return render_template('info.html', results=info)
+
+
+@app.route('/complaint', method=['POST'])
+def complaint():
+    complaint = request.form['complaint']
+    contact_info = get_complaint(complaint)
+    return render_template('complaint.html', results=contact_info)
 
 
 if __name__ == '__main__':
